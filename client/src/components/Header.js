@@ -2,22 +2,32 @@ import React, { useState } from "react";
 
 const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleLogin = () => {
     // Add your login logic here
     console.log("Logging in with:", username, password);
+    alert("Login successful!");
     setShowLogin(false);
   };
 
   const handleSignup = () => {
-    // Add your sign-up logic or redirect to sign-up page
-    console.log("Redirecting to sign up");
+    console.log("Signing up with:", email, password);
+    alert("Sign up successful!");
+    setShowSignup(false);
   };
 
   const toggleLogin = () => {
+    setShowSignup(false);
     setShowLogin(!showLogin);
+  };
+
+  const toggleSignup = () => {
+    setShowLogin(false);
+    setShowSignup(!showSignup);
   };
 
   return (
@@ -31,7 +41,7 @@ const Header = () => {
       }}
     >
       <button onClick={toggleLogin} style={{ padding: "10px 20px" }}>
-        Log In/Out
+        Log In
       </button>
       {showLogin && (
         <div
@@ -61,7 +71,35 @@ const Header = () => {
           <button onClick={handleLogin} style={{ marginRight: "5px" }}>
             Sign In
           </button>
-          <button onClick={handleSignup}>Not Signed Up?</button>
+          <button onClick={toggleSignup}>Not Signed Up?</button>
+        </div>
+      )}
+      {showSignup && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50px",
+            right: "20px",
+            border: "1px solid #ccc",
+            padding: "10px",
+            backgroundColor: "#5db6ff",
+          }}
+        >
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ display: "block", margin: "5px 0" }}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ display: "block", margin: "5px 0" }}
+          />
+          <button onClick={handleSignup}>Sign Up</button>
         </div>
       )}
     </header>
