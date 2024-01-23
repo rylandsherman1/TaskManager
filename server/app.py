@@ -57,6 +57,7 @@ class ProjectByStatus(Resource):
         ]
         return make_response(projects, 200)
 
+
 api.add_resource(ProjectByStatus, "/projects/<string:status>")
 
 
@@ -89,12 +90,13 @@ class ProjectById(Resource):
         db.session.commit()
         return make_response({}, 204)
 
+
 api.add_resource(ProjectById, "/projects/<int:id>")
 
 
 class Tasks(Resource):
     def get(self):
-        tasks = [task.to_dict(rules=("users",)) for task in Task.query.all()]
+        tasks = [task.to_dict(rules=("-users",)) for task in Task.query.all()]
         return make_response(tasks, 200)
 
     def post(self):
@@ -110,6 +112,7 @@ class Tasks(Resource):
             return make_response(task.to_dict(), 201)
         except ValueError:
             return make_response({"errors": "unable to POST"}, 400)
+
 
 api.add_resource(Tasks, "/tasks")
 
