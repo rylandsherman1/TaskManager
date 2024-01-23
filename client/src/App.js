@@ -8,6 +8,7 @@ import ProjectView from "./components/ProjectView";
 import TaskView from "./components/TaskView";
 import Auth from "./components/Auth";
 import NewTaskButton from "./components/NewTaskButton";
+import MyProjects from "./components/MyProjects";
 import "./App.css";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             />
             <Route path="/my-tasks" element={<TaskView />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/my-projects" element={<MyProjects />} />
           </Routes>
         </main>
         <NewTaskButton />
