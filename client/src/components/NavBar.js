@@ -9,7 +9,7 @@ const NavBar = () => {
         padding: "20px",
         height: "100%",
         width: "200px",
-        background: "#ececec",
+        background: "#5db6ff",
       }}
     >
       <NavLink to="/" style={{ margin: "5px" }}>
