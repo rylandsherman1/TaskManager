@@ -27,10 +27,18 @@ nav {
 
 nav a {
   display: block;
-  padding: 0.5rem 0;
+  padding: 0.5rem 1rem; /* Increase padding for a larger button */
   color: #333;
   text-decoration: none;
-  margin: 5px 0;
+  margin: 10px 0; /* Increase margin for more space between routes */
+  background-color: #f0f0f0; /* Background color for the button */
+  border-radius: 4px; /* Rounded corners for the button */
+  transition: background-color 0.3s; /* Smooth background color change on hover */
+}
+
+nav a:hover {
+  background-color: #ddd; /* Slightly darker background on hover */
+  text-decoration: none; /* Ensure no underline on hover */
 }
 
 main {
@@ -43,13 +51,22 @@ header {
   justify-content: flex-end;
   align-items: center;
   padding: 1rem;
-  background: #f8f8f8;
-  border-bottom: 1px solid #ccc;
+  background: #5db6ff;
+  border-bottom: 1px solid #5db6ff;
 }
 
 header button {
   padding: 0.5rem 1rem;
   cursor: pointer;
+}
+
+.task-box {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Other styles */
