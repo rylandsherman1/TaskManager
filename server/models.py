@@ -45,7 +45,7 @@ class Project(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    status = db.Column(db.String)
+    status = db.Column(db.String, nullable=False)
     description = db.Column(db.String)
 
     # add relationships
