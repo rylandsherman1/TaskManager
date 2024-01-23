@@ -27,6 +27,9 @@ const NavBar = () => {
       <NavLink to="/my-tasks" style={{ margin: "5px" }}>
         My Tasks
       </NavLink>
+      <NavLink to="/my-projects" style={{ margin: "5px" }}>
+        My Projects
+      </NavLink>
     </nav>
   );
 };
