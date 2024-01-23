@@ -57,13 +57,44 @@ class ProjectByStatus(Resource):
         ]
         return make_response(projects, 200)
 
-
 api.add_resource(ProjectByStatus, "/projects/<string:status>")
+
+
+class ProjectById(Resource):
+    def get(self, id):
+        project = Project.query.get(id)
+        if not project:
+            return make_response({"error": "Project not found"}, 404)
+        return make_response(project.to_dict(), 200)
+
+    def patch(self, id):
+        project = Project.query.get(id)
+        if not project:
+            return make_response({"error": "Project not found"}, 404)
+        data = request.get_json()
+        try:
+            for attr in data:
+                setattr(project, attr, data[attr])
+            db.session.add(project)
+            db.session.commit()
+            return make_response(project.to_dict(), 202)
+        except ValueError:
+            return make_response({"errors": "unable to PATCH"}, 400)
+
+    def delete(self, id):
+        project = Project.query.get(id)
+        if not project:
+            return make_response({"error": "Project not found"}, 404)
+        db.session.delete(project)
+        db.session.commit()
+        return make_response({}, 204)
+
+api.add_resource(ProjectById, "/projects/<int:id>")
 
 
 class Tasks(Resource):
     def get(self):
-        tasks = [task.to_dict() for task in Task.query.all()]
+        tasks = [task.to_dict(rules=("user",)) for task in Task.query.all()]
         return make_response(tasks, 200)
 
     def post(self):
@@ -79,8 +110,41 @@ class Tasks(Resource):
             return make_response(task.to_dict(), 201)
         except ValueError:
             return make_response({"errors": "unable to POST"}, 400)
-        
+
 api.add_resource(Tasks, "/tasks")
+
+
+class TaskById(Resource):
+    def get(self, id):
+        task = Task.query.get(id)
+        if not task:
+            return make_response({"error": "Task not found"}, 404)
+        return make_response(task.to_dict(rules=("users",)), 200)
+
+    def patch(self, id):
+        task = Task.query.get(id)
+        if not task:
+            return make_response({"error": "Task not found"}, 404)
+        data = request.get_json()
+        try:
+            for attr in data:
+                setattr(task, attr, data[attr])
+            db.session.add(task)
+            db.session.commit()
+            return make_response(task.to_dict(rules=("users",)), 202)
+        except ValueError:
+            return make_response({"error": "unable to PATCH"})
+
+    def delete(self, id):
+        task = Task.query.get(id)
+        if not task:
+            return make_response({"error": "Task not found"}, 404)
+        db.session.delete(task)
+        db.session.commit()
+        return make_response({}, 204)
+
+
+api.add_resource(TaskById, "/tasks/<int:id>")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
