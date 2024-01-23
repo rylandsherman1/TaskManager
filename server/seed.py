@@ -24,13 +24,13 @@ if __name__ == "__main__":
 
         print("Creating projects...")
         rh = Project(
-            title="Renovate House", status="Not Complete", description=fake.sentence()
+            title="Renovate House", status="not_complete", description=fake.sentence()
         )
         ry = Project(
-            title="Renovate Yard", status="In progress", description=fake.sentence()
+            title="Renovate Yard", status="in_progress", description=fake.sentence()
         )
         wh = Project(
-            title="Big Work Project", status="Complete", description=fake.sentence()
+            title="Big Work Project", status="complete", description=fake.sentence()
         )
         projects = [rh, ry, wh]
 
