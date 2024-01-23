@@ -7,6 +7,7 @@ import Header from "./components/Header"; // Ensure this is imported
 import ProjectView from "./components/ProjectView";
 import TaskView from "./components/TaskView";
 import Auth from "./components/Auth";
+import NewTaskButton from "./components/NewTaskButton";
 import "./App.css";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <Route path="/auth" element={<Auth />} />
           </Routes>
         </main>
+        <NewTaskButton />
       </div>
     </Router>
   );
