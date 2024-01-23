@@ -69,4 +69,13 @@ header button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.project-item {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Other styles */

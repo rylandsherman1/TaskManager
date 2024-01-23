@@ -17,10 +17,10 @@ const MyProjects = () => {
     <div>
       <h1>My Projects</h1>
       {projects.map((project) => (
-        <div key={project.id}>
+        <div key={project.id} className="project-item">
           <h3>{project.title}</h3>
           <p>{project.description}</p>
-          {/* Add more project details here */}
+          {/* Additional project details */}
         </div>
       ))}
     </div>
