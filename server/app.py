@@ -1,15 +1,7 @@
+# Remote library imports
 from flask import Flask, request, make_response, jsonify, session
 from flask_restful import Api, Resource
-
-from models import db
-
-#!/usr/bin/env python3
-
-# Standard library imports
-
-# Remote library imports
-from flask import request
-from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import app, db, api
@@ -20,9 +12,68 @@ from models import Task, Project, User
 # Views go here!
 
 
+# @app.before_request
+# def check_if_logged_in():
+#     if not session.get("user_id"):
+#         return {"error": "401 Unauthorized"}, 401
+
+
+@app.route("/signup", methods=("POST",))
+def signup():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+
+    user = User(username=username)
+    user.password_hash = password
+
+    try:
+        db.session.add(user)
+        db.session.commit()
+
+        session["user_id"] = user.id
+
+        return make_response(user.to_dict(), 201)
+
+    except ValueError as e:
+        return make_response({"error": e.__str__()}, 400)
+    except IntegrityError:
+        return make_response({"error": "Database constraint error"}, 400)
+
+
+@app.route("/login", methods=("POST",))
+def login():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+
+    user = User.query.filter(User.username == username).first()
+
+    if user:
+        if user.authenticate(password):
+            session["user_id"] = user.id
+            return make_response(user.to_dict(), 200)
+    return {"error": "Incorrect username or password"}, 401
+
+
+@app.route("/check_session")
+def check_session():
+    user = User.query.get(session.get("user_id"))
+    if user:
+        return make_response(user.to_dict(), 200)
+    else:
+        return make_response({}, 401)
+
+
+@app.route("/logout", methods=("DELETE",))
+def logout():
+    session.clear()
+    return make_response({}, 204)
+
+
 @app.route("/")
 def index():
-    return "<h1>Project Server</h1>"
+    return ""
 
 
 class Projects(Resource):
