@@ -8,14 +8,14 @@ const Home = () => {
   useEffect(() => {
     // Fetch tasks when the component is mounted
     const fetchTasks = async () => {
-      const response = await fetch("http://localhost:5000/tasks"); // Use your backend's URL
+      const response = await fetch("/tasks"); // Use your backend's URL
       const data = await response.json();
       setTasks(data); // Set tasks in state
     };
 
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://localhost:5000/projects");
+        const response = await fetch("/projects");
         const data = await response.json();
         setProjects(data);
       } catch (error) {
