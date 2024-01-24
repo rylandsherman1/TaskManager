@@ -7,7 +7,7 @@ const TaskView = () => {
     // Fetch tasks when the component mounts
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/tasks"); // Update with your API endpoint
+        const response = await fetch("/tasks"); // Update with your API endpoint
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

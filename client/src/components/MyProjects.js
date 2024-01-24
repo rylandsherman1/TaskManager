@@ -7,7 +7,7 @@ const MyProjects = () => {
   useEffect(() => {
     // Fetch projects when the component is mounted
     // Update this URL to match your backend API endpoint
-    fetch("http://localhost:5000/projects")
+    fetch("/projects")
       .then((response) => response.json())
       .then((data) => setProjects(data))
       .catch((error) => console.error("Error fetching projects:", error));
