@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 
-const Home = ({ user }) => {
+const Home = ({ user, updateTaskCompletion }) => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
 
@@ -47,6 +47,10 @@ const Home = ({ user }) => {
       });
 
       if (response.ok) {
+        // Update the global tasks state
+        updateTaskCompletion(taskId, true);
+
+        // Update the local tasks state
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
             task.id === taskId ? { ...task, complete: true } : task
