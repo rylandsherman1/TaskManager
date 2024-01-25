@@ -47,21 +47,15 @@ function App() {
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
-  const logout = () => {
-    fetch("/logout", { method: "DELETE" })
-      .then(() => setUser(null))
-      .catch((error) => console.error("Error logging out:", error));
-  };
-
   let view;
   if (user) {
     view = (
       <div className="App">
         <NavBar />
         <main>
-          <button type="button" onClick={logout}>
+          {/* <button type="button" onClick={logout}>
             Log Out
-          </button>
+          </button> */}
           <Routes>
             <Route path="/" element={<Home tasks={tasks} />} />
             <Route

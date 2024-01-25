@@ -68,6 +68,7 @@ const Home = ({ user }) => {
         {tasks.map((task) => (
           <div key={task.id} className="task-box">
             <h3>{task.title}</h3>
+            <p>Assigned to: {task.users.username}</p>
             <p>Complete: {task.complete ? "Yes" : "No"}</p>
             {!task.complete && (
               <button
@@ -80,6 +81,7 @@ const Home = ({ user }) => {
           </div>
         ))}
       </div>
+      <h2>Projects</h2>
       <div>
         {projects.map((project) => (
           <div key={project.id} className="project-item">
