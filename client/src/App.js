@@ -70,8 +70,17 @@ function App() {
                 <TaskView tasks={tasks.filter((task) => task.complete)} />
               }
             />
-            <Route path="/my-tasks" element={<MyTasks tasks={tasks} user={user}/>} />
-            <Route path="/my-projects" element={<MyProjects user={user}/>} />
+            <Route
+              path="/my-tasks"
+              element={
+                <MyTasks 
+                  tasks={tasks} 
+                  user={user} 
+                  updateTaskCompletion={updateTaskCompletion}
+                  />
+              }
+            />
+            <Route path="/my-projects" element={<MyProjects user={user} />} />
           </Routes>
         </main>
         <NewTaskButton onTaskCreate={handleTaskCreate} />
