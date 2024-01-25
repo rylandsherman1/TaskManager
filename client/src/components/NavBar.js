@@ -15,12 +15,6 @@ const NavBar = () => {
       <NavLink to="/" style={{ margin: "5px" }}>
         Home
       </NavLink>
-      <NavLink to="/not-started" style={{ margin: "5px" }}>
-        Not Started
-      </NavLink>
-      <NavLink to="/in-progress" style={{ margin: "5px" }}>
-        In Progress
-      </NavLink>
       <NavLink to="/completed" style={{ margin: "5px" }}>
         Completed
       </NavLink>
