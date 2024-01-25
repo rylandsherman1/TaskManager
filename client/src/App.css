@@ -58,6 +58,7 @@ header {
 header button {
   padding: 0.5rem 1rem;
   cursor: pointer;
+  z-index: 1;
 }
 
 .task-box {

@@ -26,7 +26,15 @@ export default function Signup({ setUser }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          background: "white",
+          padding: "60px 20px",
+          display: "grid",
+          justifyContent: "start",
+        }}
+      >
         <div>
           <label htmlFor="username">Username: </label>
           <input
@@ -34,6 +42,11 @@ export default function Signup({ setUser }) {
             id="username"
             name="username"
             onChange={handleLoginChange}
+            style={{
+              width: "100%",
+              display: "block",
+              margin: "5px 0",
+            }}
           />
         </div>
         <div>
@@ -44,13 +57,33 @@ export default function Signup({ setUser }) {
             type="password"
             id="password"
             name="password"
+            style={{
+              width: "100%",
+              display: "block",
+              margin: "5px 0",
+            }}
           />
           <div>
-            <input type="submit" value="Signup" />
+            <input
+              type="submit"
+              value="Sign Up"
+              style={{
+                padding: "5px 20px",
+                margin: "10% 0",
+              }}
+            />
           </div>
         </div>
       </form>
-      <Link to="/">Sign In</Link>
+      <Link
+        to="/"
+        style={{
+          display: "block",
+          margin: "5px 20px",
+        }}
+      >
+        Sign In
+      </Link>
     </div>
   );
 }

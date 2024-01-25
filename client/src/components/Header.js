@@ -68,9 +68,12 @@ const Header = ({user, setUser}) => {
           <h1
             style={{
               position: "absolute",
-              left: 10,
+              left: 0,
               top: 10,
               color: "white",
+              background: "#5db6ff",
+              padding: "0px 20px",
+              width: "100%"
             }}
           >
             On My Plate
