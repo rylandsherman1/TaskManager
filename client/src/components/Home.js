@@ -67,6 +67,7 @@ const Home = ({ user, updateTaskCompletion }) => {
   return (
     <div>
       <h1>Welcome, {user?.username || "Guest"}!</h1>
+      <br />
       <h2>Tasks</h2>
       <div>
         {tasks.map((task) => (
@@ -85,6 +86,7 @@ const Home = ({ user, updateTaskCompletion }) => {
           </div>
         ))}
       </div>
+      <br />
       <h2>Projects</h2>
       <div>
         {projects.map((project) => (
