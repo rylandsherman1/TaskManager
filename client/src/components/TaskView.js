@@ -23,11 +23,12 @@ const TaskView = ({ updateTaskCompletion, handleDeleteTask }) => {
     fetchTasks();
   }, [location.pathname]);
 
-
-  const filteredTasks = tasks.filter((task) => {
-    return location.pathname === "/completed" ? task.complete : !task.complete;
-  });
-
+  let filteredTasks = tasks;
+  if (location.pathname === "/completed") {
+    filteredTasks = tasks.filter((task) => task.complete);
+  } else {
+    filteredTasks = tasks.filter((task) => !task.complete);
+  }
 
   const handleEditClick = (taskId) => {
     setEditingTaskId(taskId);
@@ -83,7 +84,6 @@ const TaskView = ({ updateTaskCompletion, handleDeleteTask }) => {
     }
   };
 
-
   const handleDeleteClick = async (taskId) => {
     try {
       // Send a DELETE request to the server to delete the task
@@ -101,11 +101,6 @@ const TaskView = ({ updateTaskCompletion, handleDeleteTask }) => {
       console.error("Error deleting task:", error);
     }
   };
-
-  const filteredTasks = tasks.filter((task) => {
-    return location.pathname === "/completed" ? task.complete : !task.complete;
-  });
-
 
   return (
     <div>
