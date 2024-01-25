@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "../App.css"; // Adjust the path based on your file structure
 
-const Home = () => {
+const Home = ({user}) => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
 
@@ -63,12 +63,16 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Welcome to On My Plate!</h1>
+
+      <h1>Welcome, {user.username}!</h1>
+      <h2>Tasks</h2>
+
       <div>
         {tasks.map((task) => (
           <div key={task.id} className="task-box">
             <h3>{task.title}</h3>
             <p>Complete: {task.complete ? "Yes" : "No"}</p>
+
             {!task.complete && (
               <button
                 className="complete-button"
@@ -77,6 +81,7 @@ const Home = () => {
                 ✓ {/* Checkmark character */}
               </button>
             )}
+
           </div>
         ))}
       </div>

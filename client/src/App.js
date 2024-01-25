@@ -29,6 +29,7 @@ function App() {
       .catch((error) => console.error("Error checking session:", error));
   }, []);
 
+
   const fetchTasks = async () => {
     // Fetch tasks from the server
     try {
@@ -53,17 +54,20 @@ function App() {
       .catch((error) => console.error("Error logging out:", error));
   };
 
+
   let view;
   if (user) {
     view = (
       <div className="App">
         <NavBar />
         <main>
+
           <button type="button" onClick={logout}>
             Log Out
           </button>
           <Routes>
             <Route path="/" element={<Home tasks={tasks} />} />
+
             <Route
               path="/not-started"
               element={<ProjectView status="Not Started" />}
@@ -96,7 +100,9 @@ function App() {
 
   return (
     <Router>
-      <Header />
+
+      <Header setUser={setUser} user={user}/> {/* Header outside the main tag */}
+
       {view}
     </Router>
   );

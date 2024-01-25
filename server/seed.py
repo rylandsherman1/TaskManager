@@ -17,9 +17,9 @@ if __name__ == "__main__":
         Task.query.delete()
 
         print("Creating users...")
-        holly = User(username="hawheeler", _password_hash="fldskjva")
-        nadia = User(username="nting", _password_hash="wielskdlv")
-        el = User(username="eburleigh", _password_hash="lskajvu")
+        holly = User(username="hawheeler", password_hash="1234")
+        nadia = User(username="nting", password_hash="5678")
+        el = User(username="eburleigh", password_hash="7890")
         users = [holly, nadia, el]
 
         print("Creating projects...")
