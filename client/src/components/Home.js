@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../App.css";
 import { useLocation } from "react-router-dom";
 
-const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
+const Home = ({ user }) => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const location = useLocation();
@@ -53,16 +53,8 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
       });
 
       if (response.ok) {
-        updateTaskCompletion(taskId, true);
-
-        // Fetch the updated list of tasks
-        const updatedTasksResponse = await fetch("/tasks");
-        if (updatedTasksResponse.ok) {
-          const updatedTasks = await updatedTasksResponse.json();
-          setTasks(updatedTasks);
-        } else {
-          console.error("Failed to fetch updated tasks");
-        }
+        // Implement logic to update task completion status.
+        // You can update the local state or perform any other actions as needed.
       } else {
         console.error("Failed to mark task as complete");
       }
@@ -80,19 +72,51 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
       });
 
       if (response.ok) {
-        updateProjectCompletion(projectId, "Completed");
-        setProjects((prevProjects) =>
-          prevProjects.map((project) =>
-            project.id === projectId
-              ? { ...project, status: "Completed" }
-              : project
-          )
-        );
+        // Implement logic to update project completion status.
+        // You can update the local state or perform any other actions as needed.
       } else {
         console.error("Failed to mark project as complete");
       }
     } catch (error) {
       console.error("Error updating project:", error);
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      // Send a DELETE request to the server to delete the task
+      const response = await fetch(`/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        // If the deletion was successful, remove the task from the tasks state
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+      } else {
+        console.error("Failed to delete task");
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  const deleteProject = async (projectId) => {
+    try {
+      // Send a DELETE request to the server to delete the project
+      const response = await fetch(`/projects/${projectId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        // If the deletion was successful, remove the project from the projects state
+        setProjects((prevProjects) =>
+          prevProjects.filter((project) => project.id !== projectId)
+        );
+      } else {
+        console.error("Failed to delete project");
+      }
+    } catch (error) {
+      console.error("Error deleting project:", error);
     }
   };
 
@@ -122,12 +146,8 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
       });
 
       if (response.ok) {
-        const updatedTask = await response.json();
-        setTasks((prevTasks) =>
-          prevTasks.map((task) => (task.id === taskId ? updatedTask : task))
-        );
-        setEditingTaskId(null);
-        setEditingTitle("");
+        // Implement logic to update the task with edited data.
+        // You can update the local state or perform any other actions as needed.
       } else {
         console.error("Failed to save task edits");
       }
@@ -146,20 +166,24 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
       });
 
       if (response.ok) {
-        const updatedProject = await response.json();
-        setProjects((prevProjects) =>
-          prevProjects.map((project) =>
-            project.id === projectId ? updatedProject : project
-          )
-        );
-        setEditingProjectId(null);
-        setEditingProjectTitle("");
+        // Implement logic to update the project with edited data.
+        // You can update the local state or perform any other actions as needed.
       } else {
         console.error("Failed to save project edits");
       }
     } catch (error) {
       console.error("Error saving project edits:", error);
     }
+  };
+
+  const handleDeleteClick = (taskId) => {
+    // Call the deleteTask function with the taskId to delete the task.
+    deleteTask(taskId);
+  };
+
+  const handleDeleteProject = (projectId) => {
+    // Call the deleteProject function with the projectId to delete the project.
+    deleteProject(projectId);
   };
 
   const filteredTasks = tasks.filter((task) => {
@@ -202,6 +226,12 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
                   onClick={() => handleEditTaskClick(task.id)}
                 >
                   Edit
+                </button>
+                <button
+                  className="delete-button" // Add a CSS class for styling
+                  onClick={() => handleDeleteClick(task.id)} // Handle task deletion
+                >
+                  🗑️
                 </button>
                 {!task.complete && (
                   <button
@@ -249,12 +279,20 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
                 Save
               </button>
             ) : (
-              <button
-                className="edit-button"
-                onClick={() => handleEditProjectClick(project.id)}
-              >
-                Edit
-              </button>
+              <>
+                <button
+                  className="edit-button"
+                  onClick={() => handleEditProjectClick(project.id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="delete-button" // Add a CSS class for styling
+                  onClick={() => handleDeleteProject(project.id)} // Handle project deletion
+                >
+                  🗑️
+                </button>
+              </>
             )}
           </div>
         ))}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const TaskView = ({ updateTaskCompletion }) => {
+const TaskView = ({ updateTaskCompletion, handleDeleteTask }) => {
   const [tasks, setTasks] = useState([]);
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingTitle, setEditingTitle] = useState("");
@@ -22,7 +22,6 @@ const TaskView = ({ updateTaskCompletion }) => {
 
     fetchTasks();
   }, [location.pathname]);
-
 
   const filteredTasks = tasks.filter((task) => {
     return location.pathname === "/completed" ? task.complete : !task.complete;
@@ -82,6 +81,24 @@ const TaskView = ({ updateTaskCompletion }) => {
     }
   };
 
+  const handleDeleteClick = async (taskId) => {
+    try {
+      // Send a DELETE request to the server to delete the task
+      const response = await fetch(`/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        // If the deletion was successful, remove the task from the tasks state
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+      } else {
+        console.error("Failed to delete task");
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
   return (
     <div>
       <h1>
@@ -115,14 +132,12 @@ const TaskView = ({ updateTaskCompletion }) => {
               Save
             </button>
           )}
-          {!task.complete && (
-            <button
-              className="complete-button"
-              onClick={() => handleCompleteClick(task.id)}
-            >
-              ✓
-            </button>
-          )}
+          <button
+            className="delete-button" // Add a CSS class for styling
+            onClick={() => handleDeleteClick(task.id)} // Handle task deletion
+          >
+            🗑️
+          </button>
         </div>
       ))}
     </div>
