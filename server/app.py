@@ -200,7 +200,6 @@ class TaskById(Resource):
 
 api.add_resource(TaskById, "/tasks/<int:id>")
 
-
 class TaskComplete(Resource):
     def patch(self, id):
         task = Task.query.get(id)

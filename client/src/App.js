@@ -8,6 +8,7 @@ import TaskView from "./components/TaskView";
 import Login from "./components/Login";
 import NewTaskButton from "./components/NewTaskButton";
 import MyProjects from "./components/MyProjects";
+import MyTasks from "./components/MyTasks";
 import Signup from "./components/Signup";
 import "./App.css";
 
@@ -59,6 +60,7 @@ function App() {
                 <Home
                   tasks={tasks}
                   updateTaskCompletion={updateTaskCompletion}
+                  user={user}
                 />
               }
             />
@@ -68,7 +70,7 @@ function App() {
                 <TaskView tasks={tasks.filter((task) => task.complete)} />
               }
             />
-            <Route path="/my-tasks" element={<TaskView tasks={tasks} />} />
+            <Route path="/my-tasks" element={<MyTasks tasks={tasks} user={user}/>} />
             <Route path="/my-projects" element={<MyProjects />} />
           </Routes>
         </main>
