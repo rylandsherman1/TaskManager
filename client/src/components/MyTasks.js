@@ -22,8 +22,19 @@ const MyTasks = ({user}) => {
     fetchTasks();
     }, []);
 
-    const filteredTasks = tasks.filter((tasks) => tasks.user_id = user.id ? tasks : null)
+    const filteredTasks = tasks.filter((task) => task.user_id === user.id)
 
+    return (
+      <div>
+        <h1>My Tasks</h1>
+        {filteredTasks.map((task) => (
+        <div key={task.id} className="task-box">
+          <h3>{task.title}</h3>
+          <p>Complete: {task.complete ? "Yes" : "No"}</p>
+        </div>
+        ))}
+      </div>
+    );
 }
 
 export default MyTasks

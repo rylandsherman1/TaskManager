@@ -103,7 +103,7 @@ api.add_resource(Projects, "/projects")
 class ProjectByStatus(Resource):
     def get(self, status):
         projects = [
-            project.to_dict(rules=("tasks",))
+            project.to_dict(rules=("tasks", "users"))
             for project in Project.query.filter_by(status=status)
         ]
         return make_response(projects, 200)
