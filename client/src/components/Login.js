@@ -27,7 +27,7 @@ export default function Login({ setUser }) {
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-          <labl htmlFor="username">Username: </labl>
+          <label htmlFor="username">Username: </label>
           <input
             value={loginInfo.username}
             id="username"
@@ -35,7 +35,7 @@ export default function Login({ setUser }) {
             onChange={handleLoginChange}
           />
         </div>
-        <labl htmlFor="password">Password: </labl>
+        <label htmlFor="password">Password: </label>
         <input
           value={loginInfo.password}
           id="password"

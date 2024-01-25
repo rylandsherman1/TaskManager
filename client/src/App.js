@@ -14,18 +14,44 @@ import "./App.css";
 
 function App() {
   const [user, setUser] = useState();
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    fetch('/check_session')
-    .then(r => r.json())
-    .then((data) => {
-      if (data.id) {
-        setUser(data);
-      } else {
-        setUser(null);
-      }
-    });
+    fetch("/check_session")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.id) {
+          setUser(data);
+        } else {
+          setUser(null);
+        }
+      })
+      .catch((error) => console.error("Error checking session:", error));
   }, []);
+
+  const fetchTasks = async () => {
+    // Fetch tasks from the server
+    try {
+      const response = await fetch("/tasks");
+      if (response.ok) {
+        const data = await response.json();
+        setTasks(data);
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  };
+
+  const handleTaskCreate = async (newTask) => {
+    // Update the tasks state with the new task
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  };
+
+  const logout = () => {
+    fetch("/logout", { method: "DELETE" })
+      .then(() => setUser(null))
+      .catch((error) => console.error("Error logging out:", error));
+  };
 
   let view;
   if (user) {
@@ -33,8 +59,11 @@ function App() {
       <div className="App">
         <NavBar />
         <main>
+          <button type="button" onClick={logout}>
+            Log Out
+          </button>
           <Routes>
-            <Route path="/" element={<Home user={user}/>} />
+            <Route path="/" element={<Home tasks={tasks} />} />
             <Route
               path="/not-started"
               element={<ProjectView status="Not Started" />}
@@ -51,23 +80,24 @@ function App() {
             <Route path="/my-projects" element={<MyProjects />} />
           </Routes>
         </main>
-        <NewTaskButton />
+        <NewTaskButton onTaskCreate={handleTaskCreate} />
       </div>
     );
   } else if (user === null) {
     view = (
       <Routes>
         <Route index element={<Login setUser={setUser} />} />
-        <Route path='signup' element={<Signup setUser={setUser}/>} />
+        <Route path="signup" element={<Signup setUser={setUser} />} />
       </Routes>
-    )
+    );
   } else {
-    view = <p>Loading...</p>
+    view = <p>Loading...</p>;
   }
 
   return (
     <Router>
-      <Header setUser={setUser} user={user}/> {/* Header outside the main tag */}
+      <Header setUser={setUser} user={user} />{" "}
+      {/* Header outside the main tag */}
       {view}
     </Router>
   );
