@@ -154,7 +154,7 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
 
   return (
     <div>
-      <h1>Welcome, {user?.username || "Guest"}!</h1>
+      <h1>Welcome, {user.username}!</h1>
       <br />
       <h2>Tasks</h2>
       <div>

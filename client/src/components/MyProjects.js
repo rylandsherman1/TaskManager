@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const MyProjects = () => {
+const MyProjects = ({user}) => {
   const [projects, setProjects] = useState([]);
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [editingTitle, setEditingTitle] = useState("");
@@ -47,6 +47,7 @@ const MyProjects = () => {
     }
   };
 
+
   const handleEditClick = (projectId) => {
     setEditingProjectId(projectId);
     const projectToEdit = projects.find((project) => project.id === projectId);
@@ -79,10 +80,15 @@ const MyProjects = () => {
     }
   };
 
+  const filteredProjects = projects.filter((project) =>
+    project.tasks.some((task) => task.user_id === user.id)
+  );
+
+
   return (
     <div>
       <h1>My Projects</h1>
-      {projects.map((project) => (
+      {filteredProjects.map((project) => (
         <div key={project.id} className="project-item">
           <h3>
             {editingProjectId === project.id ? (
@@ -96,7 +102,16 @@ const MyProjects = () => {
             )}
           </h3>
           <p>{project.description}</p>
-          {editingProjectId === project.id ? (
+
+          {editingProjectId === project.id ? 
+          <br />
+          <h4>Tasks</h4>
+          {project.tasks.map((task) => (
+            <p key={task.id}>{task.title} - {task.complete ? "Complete" : "Incomplete"}</p>
+          ))}
+          {/* Add a button to mark the project as complete */}
+          {project.status !== "Completed" && (
+
             <button
               className="save-button"
               onClick={() => handleSaveEdit(project.id)}
