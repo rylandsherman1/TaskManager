@@ -23,9 +23,11 @@ const TaskView = ({ updateTaskCompletion, handleDeleteTask }) => {
     fetchTasks();
   }, [location.pathname]);
 
+
   const filteredTasks = tasks.filter((task) => {
     return location.pathname === "/completed" ? task.complete : !task.complete;
   });
+
 
   const handleEditClick = (taskId) => {
     setEditingTaskId(taskId);
@@ -81,6 +83,7 @@ const TaskView = ({ updateTaskCompletion, handleDeleteTask }) => {
     }
   };
 
+
   const handleDeleteClick = async (taskId) => {
     try {
       // Send a DELETE request to the server to delete the task
@@ -99,12 +102,17 @@ const TaskView = ({ updateTaskCompletion, handleDeleteTask }) => {
     }
   };
 
+  const filteredTasks = tasks.filter((task) => {
+    return location.pathname === "/completed" ? task.complete : !task.complete;
+  });
+
+
   return (
     <div>
       <h1>
         {location.pathname === "/completed" ? "Completed Tasks" : "My Tasks"}
       </h1>
-      {tasks.map((task) => (
+      {filteredTasks.map((task) => (
         <div key={task.id} className="task-box">
           <h3>
             {editingTaskId === task.id ? (

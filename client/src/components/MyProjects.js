@@ -100,6 +100,13 @@ const MyProjects = ({ user, handleDeleteProject }) => {
             )}
           </h3>
           <p>{project.description}</p>
+          <br />
+          <h4>Tasks</h4>
+          {project.tasks.map((task) => (
+            <div key={task.id}>
+            <p>{task.title} - {task.complete? "Complete" : "Incomplete"}</p>
+            </div>
+          ))}
 
           {editingProjectId === project.id ? (
             <>

@@ -75,6 +75,7 @@ function App() {
             <Route
               path="/my-tasks"
               element={
+
                 <TaskView
                   tasks={tasks}
                   updateTaskCompletion={updateTaskCompletion}
@@ -88,6 +89,11 @@ function App() {
                 <MyTasks
                   tasks={tasks}
                   user={user}
+
+                <MyTasks 
+                  tasks={tasks} 
+                  user={user} 
+
                   updateTaskCompletion={updateTaskCompletion}
                 />
               }

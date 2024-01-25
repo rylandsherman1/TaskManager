@@ -71,6 +71,7 @@ const MyTasks = ({ user, updateTaskCompletion }) => {
             <div key={task.id} className="task-box">
               <h3>{task.title}</h3>
               <p>Project: {task.project.title}</p>
+              <p>Complete: {task.complete ? "Yes" : "No"}</p>
               {!task.complete && (
                 <button
                   className="complete-button"
