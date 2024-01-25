@@ -23,6 +23,11 @@ const TaskView = ({ updateTaskCompletion }) => {
     fetchTasks();
   }, [location.pathname]);
 
+
+  const filteredTasks = tasks.filter((task) => {
+    return location.pathname === "/completed" ? task.complete : !task.complete;
+  });
+
   const handleEditClick = (taskId) => {
     setEditingTaskId(taskId);
     const taskToEdit = tasks.find((task) => task.id === taskId);

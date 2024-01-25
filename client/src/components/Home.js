@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import { useLocation } from "react-router-dom";
 
 const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
+  const location = useLocation();
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editingTitle, setEditingTitle] = useState("");
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [editingProjectTitle, setEditingProjectTitle] = useState("");
+
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -52,11 +55,15 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
 
       if (response.ok) {
         updateTaskCompletion(taskId, true);
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === taskId ? { ...task, complete: true } : task
-          )
-        );
+
+        // Fetch the updated list of tasks
+        const updatedTasksResponse = await fetch("/tasks");
+        if (updatedTasksResponse.ok) {
+          const updatedTasks = await updatedTasksResponse.json();
+          setTasks(updatedTasks);
+        } else {
+          console.error("Failed to fetch updated tasks");
+        }
       } else {
         console.error("Failed to mark task as complete");
       }
@@ -64,7 +71,7 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
       console.error("Error updating task:", error);
     }
   };
-
+  
   const handleCompleteProjectClick = async (projectId) => {
     try {
       const response = await fetch(`/projects/${projectId}/complete`, {
@@ -152,14 +159,18 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
     }
   };
 
+  const filteredTasks = tasks.filter((task) => {
+     return location.pathname === "/completed" ? task.complete : !task.complete;
+   });
+
   return (
     <div>
       <h1>Welcome, {user.username}!</h1>
       <br />
       <h2>Tasks</h2>
       <div>
-        {tasks.map((task) => (
-          <div key={task.id} className="task-box">
+        {filteredTasks.map((task) => (
+         <div key={task.id} className="task-box">
             <h3>
               {editingTaskId === task.id ? (
                 <input
@@ -172,6 +183,7 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
               )}
             </h3>
             <p>Assigned to: {task.users ? task.users.username : "N/A"}</p>
+            <p>Project: {task.project.title}</p>
             <p>Complete: {task.complete ? "Yes" : "No"}</p>
             {editingTaskId === task.id ? (
               <button
