@@ -1,9 +1,9 @@
+// App.js
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
-import Header from "./components/Header"; // Ensure this is imported
-import ProjectView from "./components/ProjectView";
+import Header from "./components/Header";
 import TaskView from "./components/TaskView";
 import Login from "./components/Login";
 import NewTaskButton from "./components/NewTaskButton";
@@ -35,10 +35,8 @@ function App() {
   };
 
   const handleTaskCreate = async (newTask) => {
-    // Add the new task to your state (or update your state with the latest tasks)
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
-
 
   const updateTaskCompletion = async (taskId, isComplete) => {
     setTasks((prevTasks) =>
@@ -48,32 +46,29 @@ function App() {
     );
   };
 
-
   let view;
   if (user) {
     view = (
       <div className="App">
         <NavBar />
         <main>
-          {/* <button type="button" onClick={logout}>
-            Log Out
-          </button> */}
           <Routes>
             <Route
               path="/"
-              element={<Home updateTaskCompletion={updateTaskCompletion} />}
+              element={
+                <Home
+                  tasks={tasks}
+                  updateTaskCompletion={updateTaskCompletion}
+                />
+              }
             />
-
             <Route
-              path="/not-started"
-              element={<ProjectView status="Not Started" />}
+              path="/completed"
+              element={
+                <TaskView tasks={tasks.filter((task) => task.complete)} />
+              }
             />
-            <Route
-              path="/in-progress"
-              element={<ProjectView status="In Progress" />}
-            />
-            <Route path="/completed" element={<TaskView />} />
-            <Route path="/my-tasks" element={<TaskView />} />
+            <Route path="/my-tasks" element={<TaskView tasks={tasks} />} />
             <Route path="/my-projects" element={<MyProjects />} />
           </Routes>
         </main>
