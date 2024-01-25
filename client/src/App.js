@@ -8,6 +8,7 @@ import TaskView from "./components/TaskView";
 import Login from "./components/Login";
 import NewTaskButton from "./components/NewTaskButton";
 import MyProjects from "./components/MyProjects";
+import MyTasks from "./components/MyTasks";
 import Signup from "./components/Signup";
 import "./App.css";
 
@@ -61,7 +62,7 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<Home updateTaskCompletion={updateTaskCompletion} />}
+              element={<Home updateTaskCompletion={updateTaskCompletion} user={user}/>}
             />
 
             <Route
@@ -73,7 +74,7 @@ function App() {
               element={<ProjectView status="In Progress" />}
             />
             <Route path="/completed" element={<TaskView />} />
-            <Route path="/my-tasks" element={<TaskView />} />
+            <Route path="/my-tasks" element={<MyTasks user={user}/>} />
             <Route path="/my-projects" element={<MyProjects />} />
           </Routes>
         </main>
