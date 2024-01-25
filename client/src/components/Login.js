@@ -25,7 +25,7 @@ export default function Login({ setUser }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           <label htmlFor="username">Username: </label>
           <input
