@@ -3,12 +3,12 @@ import React, { useState } from "react";
 const NewTaskButton = ({ onTaskCreate }) => {
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [user_id, setuser_id] = useState("");
+  const [project_id, setproject_id] = useState("");
 
   const handleCreateTask = async () => {
     // Construct the new task object
-    const newTask = { title, date, time, complete: false };
+    const newTask = { title, user_id, project_id, complete: false };
 
     // Send POST request to server
     try {
@@ -31,8 +31,8 @@ const NewTaskButton = ({ onTaskCreate }) => {
     // Reset form and close it
     setShowForm(false);
     setTitle("");
-    setDate("");
-    setTime("");
+    setuser_id("");
+    setproject_id("");
   };
 
   const handleButtonClick = () => {
@@ -74,15 +74,20 @@ const NewTaskButton = ({ onTaskCreate }) => {
             style={{ display: "block", margin: "5px 0" }}
           />
           <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            type="number"
+            placeholder="User ID"
+            value={user_id}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setuser_id(parseInt(e.target.value));
+            }}
             style={{ display: "block", margin: "5px 0" }}
           />
           <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
+            type="number"
+            placeholder="Project ID"
+            value={project_id}
+            onChange={(e) => setproject_id(parseInt(e.target.value))}
             style={{ display: "block", margin: "5px 0" }}
           />
           <button onClick={handleCreateTask}>Create Task</button>
