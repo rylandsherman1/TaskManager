@@ -76,16 +76,6 @@ function App() {
             <Route
               path="/my-tasks"
               element={
-                <TaskView
-                  tasks={tasks}
-                  updateTaskCompletion={updateTaskCompletion}
-                />
-              }
-            />
-
-            <Route
-              path="/my-tasks"
-              element={
                 <MyTasks 
                   tasks={tasks} 
                   user={user} 
