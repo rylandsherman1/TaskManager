@@ -52,6 +52,8 @@ const MyProjects = () => {
         <div key={project.id} className="project-item">
           <h3>{project.title}</h3>
           <p>{project.description}</p>
+          <h4>Tasks</h4>
+          <p>{project.tasks.title}</p>
           {/* Add a button to mark the project as complete */}
           {project.status !== "Completed" && (
             <button

@@ -69,6 +69,7 @@ const Header = ({user, setUser}) => {
             style={{
               position: "absolute",
               left: 10,
+              top: 10,
               color: "white",
             }}
           >
