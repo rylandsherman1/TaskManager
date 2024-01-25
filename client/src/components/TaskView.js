@@ -24,10 +24,6 @@ const TaskView = ({ updateTaskCompletion }) => {
   }, [location.pathname]);
 
 
-  const filteredTasks = tasks.filter((task) => {
-    return location.pathname === "/completed" ? task.complete : !task.complete;
-  });
-
   const handleEditClick = (taskId) => {
     setEditingTaskId(taskId);
     const taskToEdit = tasks.find((task) => task.id === taskId);
@@ -82,12 +78,16 @@ const TaskView = ({ updateTaskCompletion }) => {
     }
   };
 
+  const filteredTasks = tasks.filter((task) => {
+    return location.pathname === "/completed" ? task.complete : !task.complete;
+  });
+
   return (
     <div>
       <h1>
         {location.pathname === "/completed" ? "Completed Tasks" : "My Tasks"}
       </h1>
-      {tasks.map((task) => (
+      {filteredTasks.map((task) => (
         <div key={task.id} className="task-box">
           <h3>
             {editingTaskId === task.id ? (
