@@ -73,10 +73,10 @@ const Header = ({user, setUser}) => {
               color: "white",
               background: "#5db6ff",
               padding: "0px 20px",
-              width: "100%"
+              width: "100%",
             }}
           >
-            On My Plate
+            On My Plate ✓
           </h1>
         </div>
         {view}
