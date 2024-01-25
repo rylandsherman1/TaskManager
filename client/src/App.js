@@ -27,22 +27,14 @@ function App() {
     });
   }, []);
 
-  const logout = () => {
-    fetch('/logout', {method: "DELETE"})
-    .then(() => {
-      setUser(null)
-    });
-  }
-
   let view;
   if (user) {
     view = (
       <div className="App">
         <NavBar />
         <main>
-          <button type="button" onClick={logout}>Log Out</button>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home user={user}/>} />
             <Route
               path="/not-started"
               element={<ProjectView status="Not Started" />}
@@ -75,7 +67,7 @@ function App() {
 
   return (
     <Router>
-      <Header /> {/* Header outside the main tag */}
+      <Header setUser={setUser} user={user}/> {/* Header outside the main tag */}
       {view}
     </Router>
   );
