@@ -100,6 +100,7 @@ const TaskView = ({ updateTaskCompletion }) => {
               task.title
             )}
           </h3>
+          <p>Assigned to: {task.users ? task.users.username : "N/A"}</p>
           <p>Complete: {task.complete ? "Yes" : "No"}</p>
           <button
             className="edit-button"
