@@ -200,5 +200,20 @@ class TaskById(Resource):
 
 api.add_resource(TaskById, "/tasks/<int:id>")
 
+
+class TaskComplete(Resource):
+    def patch(self, id):
+        task = Task.query.get(id)
+        if not task:
+            return make_response({"error": "Task not found"}, 404)
+
+        task.complete = True
+        db.session.commit()
+        return make_response({"message": "Task marked as completed"}, 200)
+
+
+api.add_resource(TaskComplete, "/tasks/<int:id>/complete")
+
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
