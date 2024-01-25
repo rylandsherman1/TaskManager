@@ -11,7 +11,6 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [editingProjectTitle, setEditingProjectTitle] = useState("");
 
-
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -71,7 +70,7 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
       console.error("Error updating task:", error);
     }
   };
-  
+
   const handleCompleteProjectClick = async (projectId) => {
     try {
       const response = await fetch(`/projects/${projectId}/complete`, {
@@ -100,13 +99,17 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
   const handleEditTaskClick = (taskId) => {
     setEditingTaskId(taskId);
     const taskToEdit = tasks.find((task) => task.id === taskId);
-    setEditingTitle(taskToEdit.title);
+    if (taskToEdit) {
+      setEditingTitle(taskToEdit.title);
+    }
   };
 
   const handleEditProjectClick = (projectId) => {
     setEditingProjectId(projectId);
     const projectToEdit = projects.find((project) => project.id === projectId);
-    setEditingProjectTitle(projectToEdit.title);
+    if (projectToEdit) {
+      setEditingProjectTitle(projectToEdit.title);
+    }
   };
 
   const handleSaveTaskEdit = async (taskId) => {
@@ -160,8 +163,8 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
   };
 
   const filteredTasks = tasks.filter((task) => {
-     return location.pathname === "/completed" ? task.complete : !task.complete;
-   });
+    return location.pathname === "/completed" ? task.complete : !task.complete;
+  });
 
   return (
     <div>
@@ -170,7 +173,7 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
       <h2>Tasks</h2>
       <div>
         {filteredTasks.map((task) => (
-         <div key={task.id} className="task-box">
+          <div key={task.id} className="task-box">
             <h3>
               {editingTaskId === task.id ? (
                 <input
@@ -183,7 +186,7 @@ const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
               )}
             </h3>
             <p>Assigned to: {task.users ? task.users.username : "N/A"}</p>
-            <p>Project: {task.project.title}</p>
+            <p>Project: {task.project ? task.project.title : "N/A"}</p>
             <p>Complete: {task.complete ? "Yes" : "No"}</p>
             {editingTaskId === task.id ? (
               <button
