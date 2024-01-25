@@ -1,4 +1,3 @@
-// App.js
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
@@ -13,7 +12,7 @@ import Signup from "./components/Signup";
 import "./App.css";
 
 function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -29,23 +28,26 @@ function App() {
       .catch((error) => console.error("Error checking session:", error));
   }, []);
 
-  const fetchTasks = async () => {
-    // Fetch tasks from the server
-    try {
-      const response = await fetch("/tasks");
-      if (response.ok) {
-        const data = await response.json();
-        setTasks(data);
-      }
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
-    }
+  const logout = () => {
+    fetch("/logout", { method: "DELETE" })
+      .then(() => setUser(null))
+      .catch((error) => console.error("Error logging out:", error));
   };
 
   const handleTaskCreate = async (newTask) => {
-    // Update the tasks state with the new task
+    // Add the new task to your state (or update your state with the latest tasks)
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
+
+
+  const updateTaskCompletion = async (taskId, isComplete) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, complete: isComplete } : task
+      )
+    );
+  };
+
 
   let view;
   if (user) {
@@ -57,7 +59,11 @@ function App() {
             Log Out
           </button> */}
           <Routes>
-            <Route path="/" element={<Home tasks={tasks} />} />
+            <Route
+              path="/"
+              element={<Home updateTaskCompletion={updateTaskCompletion} />}
+            />
+
             <Route
               path="/not-started"
               element={<ProjectView status="Not Started" />}
@@ -66,10 +72,7 @@ function App() {
               path="/in-progress"
               element={<ProjectView status="In Progress" />}
             />
-            <Route
-              path="/completed"
-              element={<ProjectView status="Completed" />}
-            />
+            <Route path="/completed" element={<TaskView />} />
             <Route path="/my-tasks" element={<TaskView />} />
             <Route path="/my-projects" element={<MyProjects />} />
           </Routes>
