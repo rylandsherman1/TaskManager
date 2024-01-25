@@ -40,8 +40,31 @@ const Home = ({ user }) => {
       }
     };
 
-    fetchTasks();
-    fetchProjects();
+    // Define a function for auto-refresh
+    const autoRefreshData = () => {
+      // Fetch data initially when the component mounts
+      fetchTasks();
+      fetchProjects();
+
+      // Set up auto-refresh using setInterval (e.g., every minute)
+      const refreshInterval = setInterval(() => {
+        fetchTasks(); // Fetch tasks at regular intervals
+        fetchProjects(); // Fetch projects at regular intervals
+      }, 600); // 60000 milliseconds = 1 minute
+
+      // Return a cleanup function to clear the interval when the component unmounts
+      return () => {
+        clearInterval(refreshInterval); // Clear the auto-refresh interval
+      };
+    };
+
+    // Call autoRefreshData to start the auto-refresh process
+    const cleanup = autoRefreshData();
+
+    // Return a cleanup function to clear any resources when the component unmounts
+    return () => {
+      cleanup(); // Clear the auto-refresh interval when the component unmounts
+    };
   }, []);
 
   const handleCompleteTaskClick = async (taskId) => {
@@ -53,8 +76,11 @@ const Home = ({ user }) => {
       });
 
       if (response.ok) {
-        // Implement logic to update task completion status.
-        // You can update the local state or perform any other actions as needed.
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === taskId ? { ...task, complete: true } : task
+          )
+        );
       } else {
         console.error("Failed to mark task as complete");
       }
@@ -72,8 +98,17 @@ const Home = ({ user }) => {
       });
 
       if (response.ok) {
-        // Implement logic to update project completion status.
-        // You can update the local state or perform any other actions as needed.
+        // Update the project in the local state
+        setProjects((prevProjects) =>
+          prevProjects.map((project) =>
+            project.id === projectId
+              ? { ...project, status: "Completed" }
+              : project
+          )
+        );
+        // Clear the editing state
+        setEditingProjectId(null);
+        setEditingProjectTitle("");
       } else {
         console.error("Failed to mark project as complete");
       }
@@ -146,8 +181,17 @@ const Home = ({ user }) => {
       });
 
       if (response.ok) {
-        // Implement logic to update the task with edited data.
-        // You can update the local state or perform any other actions as needed.
+        // Assuming the edited task object includes the updated title,
+        // you can update the task in the local state.
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === taskId ? { ...task, title: editedTask.title } : task
+          )
+        );
+
+        // Clear the editing state
+        setEditingTaskId(null);
+        setEditingTitle("");
       } else {
         console.error("Failed to save task edits");
       }
@@ -166,8 +210,19 @@ const Home = ({ user }) => {
       });
 
       if (response.ok) {
-        // Implement logic to update the project with edited data.
-        // You can update the local state or perform any other actions as needed.
+        // Assuming the edited project object includes the updated title,
+        // you can update the project in the local state.
+        setProjects((prevProjects) =>
+          prevProjects.map((project) =>
+            project.id === projectId
+              ? { ...project, title: editedProject.title }
+              : project
+          )
+        );
+
+        // Clear the editing state
+        setEditingProjectId(null);
+        setEditingProjectTitle("");
       } else {
         console.error("Failed to save project edits");
       }
