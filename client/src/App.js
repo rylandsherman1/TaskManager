@@ -39,6 +39,7 @@ function App() {
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
+
   const updateTaskCompletion = async (taskId, isComplete) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -47,15 +48,16 @@ function App() {
     );
   };
 
+
   let view;
   if (user) {
     view = (
       <div className="App">
         <NavBar />
         <main>
-          <button type="button" onClick={logout}>
+          {/* <button type="button" onClick={logout}>
             Log Out
-          </button>
+          </button> */}
           <Routes>
             <Route
               path="/"
