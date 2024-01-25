@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const MyProjects = ({ user }) => {
+const MyProjects = ({ user, handleDeleteProject }) => {
   const [projects, setProjects] = useState([]);
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [editingTitle, setEditingTitle] = useState("");
@@ -86,7 +86,7 @@ const MyProjects = ({ user }) => {
   return (
     <div>
       <h1>My Projects</h1>
-      {filteredProjects.map((project) => (
+      {projects.map((project) => (
         <div key={project.id} className="project-item">
           <h3>
             {editingProjectId === project.id ? (
@@ -117,15 +117,13 @@ const MyProjects = ({ user }) => {
                   {task.title} - {task.complete ? "Complete" : "Incomplete"}
                 </p>
               ))}
-              {/* Add a button to mark the project as complete */}
-              {project.status !== "Completed" && (
-                <button
-                  className="save-button"
-                  onClick={() => handleSaveEdit(project.id)}
-                >
-                  Save
-                </button>
-              )}
+              {/* Add a button to save project edits */}
+              <button
+                className="save-button"
+                onClick={() => handleSaveEdit(project.id)}
+              >
+                Save
+              </button>
             </>
           ) : (
             <>
@@ -135,14 +133,18 @@ const MyProjects = ({ user }) => {
               >
                 Edit
               </button>
-              {project.status !== "Completed" && (
-                <button
-                  className="complete-button"
-                  onClick={() => handleProjectCompleteClick(project.id)}
-                >
-                  ✓
-                </button>
-              )}
+              <button
+                className="delete-button" // Add a CSS class for styling
+                onClick={() => handleDeleteProject(project.id)} // Handle project deletion
+              >
+                🗑️
+              </button>
+              <button
+                className="complete-button"
+                onClick={() => handleProjectCompleteClick(project.id)}
+              >
+                ✓
+              </button>
             </>
           )}
         </div>

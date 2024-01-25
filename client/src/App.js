@@ -1,7 +1,6 @@
-// App.js
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/Home"; // Import Home component
 import NavBar from "./components/NavBar";
 import Header from "./components/Header";
 import TaskView from "./components/TaskView";
@@ -76,15 +75,30 @@ function App() {
             <Route
               path="/my-tasks"
               element={
+
+                <TaskView
+                  tasks={tasks}
+                  updateTaskCompletion={updateTaskCompletion}
+                />
+              }
+            />
+
+            <Route
+              path="/my-tasks"
+              element={
+                <MyTasks
+                  tasks={tasks}
+                  user={user}
+
                 <MyTasks 
                   tasks={tasks} 
                   user={user} 
+
                   updateTaskCompletion={updateTaskCompletion}
-                  />
+                />
               }
             />
             <Route path="/my-projects" element={<MyProjects user={user} />} />
-
           </Routes>
         </main>
         <NewTaskButton onTaskCreate={handleTaskCreate} />
