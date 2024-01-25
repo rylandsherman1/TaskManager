@@ -71,7 +71,7 @@ function App() {
               }
             />
             <Route path="/my-tasks" element={<MyTasks tasks={tasks} user={user}/>} />
-            <Route path="/my-projects" element={<MyProjects />} />
+            <Route path="/my-projects" element={<MyProjects user={user}/>} />
           </Routes>
         </main>
         <NewTaskButton onTaskCreate={handleTaskCreate} />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const MyProjects = () => {
+const MyProjects = ({user}) => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
@@ -45,15 +45,22 @@ const MyProjects = () => {
     }
   };
 
+  const filteredProjects = projects.filter((project) =>
+    project.tasks.some((task) => task.user_id === user.id)
+  );
+
   return (
     <div>
       <h1>My Projects</h1>
-      {projects.map((project) => (
+      {filteredProjects.map((project) => (
         <div key={project.id} className="project-item">
           <h3>{project.title}</h3>
           <p>{project.description}</p>
+          <br />
           <h4>Tasks</h4>
-          <p>{project.tasks.title}</p>
+          {project.tasks.map((task) => (
+            <p key={task.id}>{task.title}</p>
+          ))}
           {/* Add a button to mark the project as complete */}
           {project.status !== "Completed" && (
             <button
