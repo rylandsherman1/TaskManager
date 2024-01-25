@@ -59,7 +59,7 @@ const MyProjects = ({user}) => {
           <br />
           <h4>Tasks</h4>
           {project.tasks.map((task) => (
-            <p key={task.id}>{task.title}</p>
+            <p key={task.id}>{task.title} - {task.complete ? "Complete" : "Incomplete"}</p>
           ))}
           {/* Add a button to mark the project as complete */}
           {project.status !== "Completed" && (
