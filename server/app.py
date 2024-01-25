@@ -147,7 +147,7 @@ api.add_resource(ProjectById, "/projects/<int:id>")
 
 class Tasks(Resource):
     def get(self):
-        tasks = [task.to_dict(rules=("-users",)) for task in Task.query.all()]
+        tasks = [task.to_dict(rules=("users",)) for task in Task.query.all()]
         return make_response(tasks, 200)
 
     def post(self):
