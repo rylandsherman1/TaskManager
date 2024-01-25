@@ -1,17 +1,35 @@
 import React, { useState } from "react";
 
-const NewTaskButton = () => {
+const NewTaskButton = ({ onTaskCreate }) => {
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  const handleCreateTask = () => {
-    // Here you would typically send the task data to your backend
-    console.log("Creating task with:", title, date, time);
-    alert(`New task posted: ${title}`);
-    setShowForm(false); // Close the form after creating the task
-    // Clear form fields
+  const handleCreateTask = async () => {
+    // Construct the new task object
+    const newTask = { title, date, time, complete: false };
+
+    // Send POST request to server
+    try {
+      const response = await fetch("/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTask),
+      });
+      const responseData = await response.json();
+      if (response.ok) {
+        alert(`New task posted: ${title}`);
+        onTaskCreate(responseData); // Update tasks state in parent component
+      } else {
+        console.error("Failed to create task", responseData);
+      }
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
+
+    // Reset form and close it
+    setShowForm(false);
     setTitle("");
     setDate("");
     setTime("");
