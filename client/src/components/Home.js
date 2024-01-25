@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 
-const Home = ({ user, updateTaskCompletion }) => {
+const Home = ({ user, updateTaskCompletion, updateProjectCompletion }) => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editingTitle, setEditingTitle] = useState("");
+  const [editingProjectId, setEditingProjectId] = useState(null);
+  const [editingProjectTitle, setEditingProjectTitle] = useState("");
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -38,7 +42,7 @@ const Home = ({ user, updateTaskCompletion }) => {
     fetchProjects();
   }, []);
 
-  const handleCompleteClick = async (taskId) => {
+  const handleCompleteTaskClick = async (taskId) => {
     try {
       const response = await fetch(`/tasks/${taskId}/complete`, {
         method: "PATCH",
@@ -47,10 +51,7 @@ const Home = ({ user, updateTaskCompletion }) => {
       });
 
       if (response.ok) {
-        // Update the global tasks state
         updateTaskCompletion(taskId, true);
-
-        // Update the local tasks state
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
             task.id === taskId ? { ...task, complete: true } : task
@@ -64,6 +65,93 @@ const Home = ({ user, updateTaskCompletion }) => {
     }
   };
 
+  const handleCompleteProjectClick = async (projectId) => {
+    try {
+      const response = await fetch(`/projects/${projectId}/complete`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "Completed" }),
+      });
+
+      if (response.ok) {
+        updateProjectCompletion(projectId, "Completed");
+        setProjects((prevProjects) =>
+          prevProjects.map((project) =>
+            project.id === projectId
+              ? { ...project, status: "Completed" }
+              : project
+          )
+        );
+      } else {
+        console.error("Failed to mark project as complete");
+      }
+    } catch (error) {
+      console.error("Error updating project:", error);
+    }
+  };
+
+  const handleEditTaskClick = (taskId) => {
+    setEditingTaskId(taskId);
+    const taskToEdit = tasks.find((task) => task.id === taskId);
+    setEditingTitle(taskToEdit.title);
+  };
+
+  const handleEditProjectClick = (projectId) => {
+    setEditingProjectId(projectId);
+    const projectToEdit = projects.find((project) => project.id === projectId);
+    setEditingProjectTitle(projectToEdit.title);
+  };
+
+  const handleSaveTaskEdit = async (taskId) => {
+    const editedTask = { title: editingTitle };
+    try {
+      const response = await fetch(`/tasks/${taskId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editedTask),
+      });
+
+      if (response.ok) {
+        const updatedTask = await response.json();
+        setTasks((prevTasks) =>
+          prevTasks.map((task) => (task.id === taskId ? updatedTask : task))
+        );
+        setEditingTaskId(null);
+        setEditingTitle("");
+      } else {
+        console.error("Failed to save task edits");
+      }
+    } catch (error) {
+      console.error("Error saving task edits:", error);
+    }
+  };
+
+  const handleSaveProjectEdit = async (projectId) => {
+    const editedProject = { title: editingProjectTitle };
+    try {
+      const response = await fetch(`/projects/${projectId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editedProject),
+      });
+
+      if (response.ok) {
+        const updatedProject = await response.json();
+        setProjects((prevProjects) =>
+          prevProjects.map((project) =>
+            project.id === projectId ? updatedProject : project
+          )
+        );
+        setEditingProjectId(null);
+        setEditingProjectTitle("");
+      } else {
+        console.error("Failed to save project edits");
+      }
+    } catch (error) {
+      console.error("Error saving project edits:", error);
+    }
+  };
+
   return (
     <div>
       <h1>Welcome, {user?.username || "Guest"}!</h1>
@@ -72,16 +160,43 @@ const Home = ({ user, updateTaskCompletion }) => {
       <div>
         {tasks.map((task) => (
           <div key={task.id} className="task-box">
-            <h3>{task.title}</h3>
-            <p>Assigned to: {task.users.username}</p>
+            <h3>
+              {editingTaskId === task.id ? (
+                <input
+                  type="text"
+                  value={editingTitle}
+                  onChange={(e) => setEditingTitle(e.target.value)}
+                />
+              ) : (
+                task.title
+              )}
+            </h3>
+            <p>Assigned to: {task.users ? task.users.username : "N/A"}</p>
             <p>Complete: {task.complete ? "Yes" : "No"}</p>
-            {!task.complete && (
+            {editingTaskId === task.id ? (
               <button
-                className="complete-button"
-                onClick={() => handleCompleteClick(task.id)}
+                className="save-button"
+                onClick={() => handleSaveTaskEdit(task.id)}
               >
-                ✓
+                Save
               </button>
+            ) : (
+              <>
+                <button
+                  className="edit-button"
+                  onClick={() => handleEditTaskClick(task.id)}
+                >
+                  Edit
+                </button>
+                {!task.complete && (
+                  <button
+                    className="complete-button"
+                    onClick={() => handleCompleteTaskClick(task.id)}
+                  >
+                    ✓
+                  </button>
+                )}
+              </>
             )}
           </div>
         ))}
@@ -91,8 +206,41 @@ const Home = ({ user, updateTaskCompletion }) => {
       <div>
         {projects.map((project) => (
           <div key={project.id} className="project-item">
-            <h3>{project.title}</h3>
+            <h3>
+              {editingProjectId === project.id ? (
+                <input
+                  type="text"
+                  value={editingProjectTitle}
+                  onChange={(e) => setEditingProjectTitle(e.target.value)}
+                />
+              ) : (
+                project.title
+              )}
+            </h3>
             <p>{project.description}</p>
+            {project.status !== "Completed" && (
+              <button
+                className="complete-button"
+                onClick={() => handleCompleteProjectClick(project.id)}
+              >
+                ✓
+              </button>
+            )}
+            {editingProjectId === project.id ? (
+              <button
+                className="save-button"
+                onClick={() => handleSaveProjectEdit(project.id)}
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                className="edit-button"
+                onClick={() => handleEditProjectClick(project.id)}
+              >
+                Edit
+              </button>
+            )}
           </div>
         ))}
       </div>

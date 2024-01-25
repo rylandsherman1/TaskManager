@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 const MyProjects = () => {
   const [projects, setProjects] = useState([]);
+  const [editingProjectId, setEditingProjectId] = useState(null);
+  const [editingTitle, setEditingTitle] = useState("");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -45,23 +47,79 @@ const MyProjects = () => {
     }
   };
 
+  const handleEditClick = (projectId) => {
+    setEditingProjectId(projectId);
+    const projectToEdit = projects.find((project) => project.id === projectId);
+    setEditingTitle(projectToEdit.title);
+  };
+
+  const handleSaveEdit = async (projectId) => {
+    const editedProject = { title: editingTitle };
+    try {
+      const response = await fetch(`/projects/${projectId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editedProject),
+      });
+
+      if (response.ok) {
+        const updatedProject = await response.json();
+        setProjects((prevProjects) =>
+          prevProjects.map((project) =>
+            project.id === projectId ? updatedProject : project
+          )
+        );
+        setEditingProjectId(null);
+        setEditingTitle("");
+      } else {
+        console.error("Failed to save project edits");
+      }
+    } catch (error) {
+      console.error("Error saving project edits:", error);
+    }
+  };
+
   return (
     <div>
       <h1>My Projects</h1>
       {projects.map((project) => (
         <div key={project.id} className="project-item">
-          <h3>{project.title}</h3>
+          <h3>
+            {editingProjectId === project.id ? (
+              <input
+                type="text"
+                value={editingTitle}
+                onChange={(e) => setEditingTitle(e.target.value)}
+              />
+            ) : (
+              project.title
+            )}
+          </h3>
           <p>{project.description}</p>
-          <h4>Tasks</h4>
-          <p>{project.tasks.title}</p>
-          {/* Add a button to mark the project as complete */}
-          {project.status !== "Completed" && (
+          {editingProjectId === project.id ? (
             <button
-              className="complete-button"
-              onClick={() => handleProjectCompleteClick(project.id)}
+              className="save-button"
+              onClick={() => handleSaveEdit(project.id)}
             >
-              ✓ {/* Checkmark character */}
+              Save
             </button>
+          ) : (
+            <>
+              <button
+                className="edit-button"
+                onClick={() => handleEditClick(project.id)}
+              >
+                Edit
+              </button>
+              {project.status !== "Completed" && (
+                <button
+                  className="complete-button"
+                  onClick={() => handleProjectCompleteClick(project.id)}
+                >
+                  ✓
+                </button>
+              )}
+            </>
           )}
         </div>
       ))}

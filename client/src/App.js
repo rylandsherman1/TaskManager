@@ -1,5 +1,5 @@
 // App.js
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
@@ -65,10 +65,21 @@ function App() {
             <Route
               path="/completed"
               element={
-                <TaskView tasks={tasks.filter((task) => task.complete)} />
+                <TaskView
+                  tasks={tasks.filter((task) => task.complete)}
+                  updateTaskCompletion={updateTaskCompletion}
+                />
               }
             />
-            <Route path="/my-tasks" element={<TaskView tasks={tasks} />} />
+            <Route
+              path="/my-tasks"
+              element={
+                <TaskView
+                  tasks={tasks}
+                  updateTaskCompletion={updateTaskCompletion}
+                />
+              }
+            />
             <Route path="/my-projects" element={<MyProjects />} />
           </Routes>
         </main>
@@ -88,8 +99,7 @@ function App() {
 
   return (
     <Router>
-      <Header setUser={setUser} user={user} />{" "}
-      {/* Header outside the main tag */}
+      <Header setUser={setUser} user={user} />
       {view}
     </Router>
   );
