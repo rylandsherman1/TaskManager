@@ -70,7 +70,7 @@ const MyTasks = ({ user, updateTaskCompletion }) => {
         : filteredTasks.map((task) => (
             <div key={task.id} className="task-box">
               <h3>{task.title}</h3>
-              <p>Complete: {task.complete ? "Yes" : "No"}</p>
+              <p>Project: {task.project.title}</p>
               {!task.complete && (
                 <button
                   className="complete-button"

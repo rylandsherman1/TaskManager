@@ -23,7 +23,7 @@ const TaskView = () => {
   }, []);
 
   const filteredTasks = tasks.filter((task) => {
-    return location.pathname === "/completed" ? task.complete : true;
+    return location.pathname === "/completed" ? task.complete : !task.complete;
   });
 
   return (
