@@ -86,7 +86,7 @@ const MyProjects = ({ user, handleDeleteProject }) => {
   return (
     <div>
       <h1>My Projects</h1>
-      {projects.map((project) => (
+      {filteredProjects.map((project) => (
         <div key={project.id} className="project-item">
           <h3>
             {editingProjectId === project.id ? (
