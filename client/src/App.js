@@ -28,11 +28,11 @@ function App() {
       .catch((error) => console.error("Error checking session:", error));
   }, []);
 
-  const logout = () => {
-    fetch("/logout", { method: "DELETE" })
-      .then(() => setUser(null))
-      .catch((error) => console.error("Error logging out:", error));
-  };
+  // const logout = () => {
+  //   fetch("/logout", { method: "DELETE" })
+  //     .then(() => setUser(null))
+  //     .catch((error) => console.error("Error logging out:", error));
+  // };
 
   const handleTaskCreate = async (newTask) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);

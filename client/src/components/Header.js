@@ -5,6 +5,7 @@ const Header = ({user, setUser}) => {
   const logout = () => {
     fetch("/logout", { method: "DELETE" }).then(() => {
       setUser(null);
+      window.location.href="/";
     });
   };
 
