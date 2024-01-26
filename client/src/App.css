@@ -79,5 +79,81 @@ header button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.edit-button {
+  margin: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 1;
+  background: #e8f5fd;
+  border-width: thin;
+  border-color: #5db6ff;
+  border-radius: 5px;
+}
+
+.edit-button:hover {
+  background: #5db6ff;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.delete-button {
+  margin: 5px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+  background: #e8f5fd;
+  border-width: thin;
+  border-color: #5db6ff;
+  border-radius: 5px;
+}
+.delete-button:hover {
+  background: #5db6ff;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.complete-button {
+  margin: 5px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+  background: #e8f5fd;
+  border-width: thin;
+  border-color: #5db6ff;
+  border-radius: 5px;
+}
+
+.complete-button:hover {
+  background: #5db6ff;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.save-button {
+  margin: 5px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+  background: #e8f5fd;
+  border-width: thin;
+  border-color: #5db6ff;
+  border-radius: 5px;
+}
+
+.save-button:hover {
+  background: #5db6ff;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.logout-button {
+  border-radius: 5px;
+  border-width: 0;
+}
+
+.logout-button:hover {
+  background-color: #ddd;
+  transition: background-color 0.3s;
+}
 
 /* Other styles */
