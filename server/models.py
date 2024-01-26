@@ -49,7 +49,7 @@ class Project(db.Model, SerializerMixin):
     description = db.Column(db.String)
 
     # add relationships
-    tasks = db.relationship("Task", back_populates="project")
+    tasks = db.relationship("Task", back_populates="project", cascade="all, delete-orphan")
     users = association_proxy("tasks", "users")
 
     # add serialization rules
